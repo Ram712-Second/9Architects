@@ -1,40 +1,39 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Search, Lightbulb, Pencil, FileText, Hammer, Key } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const processSteps = [
   {
-    icon: Search,
+    number: '01',
     title: 'Discovery',
-    description: 'Understanding your vision, requirements, and project goals',
+    description: 'Understanding your vision, requirements, and project goals through comprehensive consultation and site analysis.',
   },
   {
-    icon: Lightbulb,
+    number: '02',
     title: 'Planning',
-    description: 'Developing strategic approaches and feasibility studies',
+    description: 'Developing strategic approaches and feasibility studies to ensure optimal project execution.',
   },
   {
-    icon: Pencil,
+    number: '03',
     title: 'Concept Design',
-    description: 'Creating initial design concepts and visual representations',
+    description: 'Creating initial design concepts and visual representations that bring your vision to life.',
   },
   {
-    icon: FileText,
+    number: '04',
     title: 'Detailed Design',
-    description: 'Refining designs with technical specifications and documentation',
+    description: 'Refining designs with technical specifications and comprehensive documentation for flawless execution.',
   },
   {
-    icon: Hammer,
+    number: '05',
     title: 'Execution',
-    description: 'Overseeing construction and ensuring quality implementation',
+    description: 'Overseeing construction and ensuring quality implementation with meticulous attention to detail.',
   },
   {
-    icon: Key,
+    number: '06',
     title: 'Handover',
-    description: 'Final inspections and project delivery to client',
+    description: 'Final inspections and project delivery to client with complete documentation and support.',
   },
 ];
 
@@ -45,19 +44,21 @@ const Process = () => {
     const section = sectionRef.current;
     if (!section) return;
 
+    const cards = section.querySelectorAll('.process-card');
+
     ScrollTrigger.create({
       trigger: section,
       start: 'top center',
       onEnter: () => {
         gsap.fromTo(
-          '.process-step',
-          { opacity: 0, x: -50 },
+          cards,
+          { opacity: 0, y: 60 },
           {
             opacity: 1,
-            x: 0,
+            y: 0,
             duration: 0.8,
-            stagger: 0.2,
-            ease: 'power2.out',
+            stagger: 0.15,
+            ease: 'power3.out',
           }
         );
       },
@@ -68,38 +69,56 @@ const Process = () => {
     <section
       id="process"
       ref={sectionRef}
-      className="section-padding bg-white"
+      className="section-padding bg-background relative overflow-hidden"
     >
-      <div className="container mx-auto px-6 lg:px-12">
-        <h2 className="text-center mb-16 text-black">Our Process</h2>
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl -z-10"></div>
 
-        <div className="max-w-4xl mx-auto">
-          {processSteps.map((step, index) => {
-            const Icon = step.icon;
-            return (
-              <div
-                key={index}
-                className="process-step flex gap-8 mb-12 last:mb-0 items-start"
-              >
-                <div className="flex-shrink-0 w-16 h-16 bg-black rounded-full flex items-center justify-center">
-                  <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
+      <div className="container mx-auto px-6 lg:px-12">
+        {/* Section Header */}
+        <div className="text-center mb-20 md:mb-28">
+          <div className="inline-block mb-4">
+            <div className="w-12 h-[1px] bg-foreground/30 mb-6 mx-auto"></div>
+          </div>
+          <h2 className="text-foreground mb-6">Our Process</h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-light">
+            A systematic approach to transforming your vision into reality
+          </p>
+        </div>
+
+        {/* Process Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
+          {processSteps.map((step, index) => (
+            <div
+              key={index}
+              className="process-card group relative"
+            >
+              {/* Card Container */}
+              <div className="relative h-full p-8 md:p-10 bg-card border border-border/50 hover:border-foreground/20 transition-all duration-500 rounded-none">
+                {/* Number */}
+                <div className="absolute top-8 right-8 text-6xl md:text-7xl font-extralight text-foreground/10 group-hover:text-foreground/20 transition-colors duration-500">
+                  {step.number}
                 </div>
 
-                <div className="flex-1 pt-2">
-                  <h3 className="text-3xl font-light text-black mb-2">
+                {/* Content */}
+                <div className="relative z-10">
+                  <div className="w-8 h-[1px] bg-foreground/40 mb-6"></div>
+                  
+                  <h3 className="text-2xl md:text-3xl font-light text-foreground mb-4 tracking-tight">
                     {step.title}
                   </h3>
-                  <p className="text-lg text-black/70 font-light leading-relaxed">
+                  
+                  <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed">
                     {step.description}
                   </p>
                 </div>
 
-                <div className="flex-shrink-0 text-6xl font-light text-black/10">
-                  0{index + 1}
-                </div>
+                {/* Hover Effect Line */}
+                <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-foreground group-hover:w-full transition-all duration-700"></div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>
